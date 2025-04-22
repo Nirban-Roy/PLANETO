@@ -1,0 +1,1429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Planet O Drone Store | Premium Drones & Accessories</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    :root {
+      --primary: #10b981;
+      --primary-dark: #059669;
+      --dark: #1a1a1a;
+      --darker: #2D2D2D;
+      --light: #f0f0f0;
+      --header-height: 72px;
+    }
+    
+    body {
+      background-color: var(--dark);
+      color: var(--light);
+      font-family: 'Inter', sans-serif;
+    }
+    
+    .product-card {
+      transition: all 0.3s ease;
+      background-color: var(--darker);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    }
+    
+    /* Modern overlay styling */
+    .modal-overlay {
+  background-color: rgba(0, 0, 0, 0.85) !important;
+  backdrop-filter: blur(6px);
+}
+
+    
+    .product-modal {
+      background: linear-gradient(145deg, #2D2D2D, #1E1E1E);
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+    
+    /* Improved quantity controls */
+    .quantity-control {
+      display: flex;
+      align-items: center;
+      background: rgba(255,255,255,0.1);
+      border-radius: 8px;
+      padding: 4px;
+    }
+    
+    .quantity-btn {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255,255,255,0.1);
+      border: none;
+      color: white;
+      font-size: 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .quantity-btn:hover {
+      background: var(--primary);
+    }
+    
+    .quantity-display {
+      min-width: 40px;
+      text-align: center;
+      font-weight: 600;
+    }
+    
+    /* Cart total indicator */
+    .cart-total {
+      background: var(--primary);
+      border-radius: 999px;
+      padding: 2px 8px;
+      font-size: 0.75rem;
+      margin-left: 8px;
+    }
+    
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+      background: var(--darker);
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: var(--primary);
+      border-radius: 4px;
+    }
+
+    .badge-sale {
+      position: absolute;
+      top: 0.75rem;
+      right: 0.75rem;
+      background-color: #ef4444;
+      color: white;
+      font-size: 0.75rem;
+      font-weight: bold;
+      padding: 0.25rem 0.5rem;
+      border-radius: 999px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .badge-offer {
+      position: absolute;
+      top: 0.75rem;
+      right: 0.75rem;
+      background-color: #3b82f6;
+      color: white;
+      font-size: 0.75rem;
+      font-weight: bold;
+      padding: 0.25rem 0.5rem;
+      border-radius: 999px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    
+    /* Tab styling */
+    .tab-btn {
+      position: relative;
+      padding: 0.5rem 1rem;
+      border: none;
+      background: transparent;
+      color: rgba(255,255,255,0.7);
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+    
+    .tab-btn.active {
+      color: white;
+    }
+    
+    .tab-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--primary);
+    }
+    
+    /* Price tag styling */
+    .price-tag {
+      font-size: 1.25rem;
+      font-weight: 700;
+      background: linear-gradient(to right, var(--primary), #22c55e);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    /* Hero section gradient */
+    .hero-gradient {
+      background: linear-gradient(135deg, rgba(16,185,129,0.1) 0%, rgba(0,0,0,0.8) 100%);
+    }
+
+    .tab-content {
+      display: none;
+    }
+    
+    .tab-content.active {
+      display: block;
+    }
+  </style>
+</head>
+<body class="relative min-h-screen">
+  <!-- Header -->
+  <header class="fixed top-0 left-0 right-0 z-50 bg-black/90 border-b border-gray-800 backdrop-blur-sm">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <!-- Logo -->
+      <a href="index.html" class="flex items-center">
+        <img src="Files/PLANET%20O%20vcard%20FINAL.jpg" alt="Planet O Logo" class="h-10 w-auto rounded-md" />
+        <span class="ml-2 text-xl font-bold text-white">Drone Store</span>
+      </a>
+      
+      <!-- Navigation -->
+      <nav class="hidden md:flex space-x-6 text-base font-medium text-gray-300">
+        <a href="index.html" class="hover:text-green-300 transition-colors">Home</a>
+        <a href="#products" class="hover:text-green-300 transition-colors">Products</a>
+        <a href="#offers" class="hover:text-green-300 transition-colors">Special Offers</a>
+        <a href="#support" class="hover:text-green-300 transition-colors">Support</a>
+      </nav>
+      
+      <!-- Cart Button with Total -->
+      <button id="cartBtn" class="text-white relative flex items-center">
+        <i class="fas fa-shopping-cart text-xl"></i>
+        <span id="cartCount" class="absolute -top-2 -right-2 bg-green-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
+        <span id="cartTotalAmount" class="hidden md:block ml-2 text-sm font-medium">₹0</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="pt-16">
+    <!-- Hero Section -->
+    <section class="hero-section hero-gradient relative text-white py-20 md:py-32">
+      <div class="max-w-7xl mx-auto px-6 text-center">
+        <h1 class="text-4xl md:text-6xl font-bold mb-6">Elevate Your Perspective</h1>
+        <p class="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto">
+          Discover premium drones for professionals and enthusiasts. Capture breathtaking aerial footage with our cutting-edge technology.
+        </p>
+        <div class="flex flex-col sm:flex-row justify-center gap-4">
+          <a href="#products" class="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-full font-semibold transition-colors shadow-lg">Shop Now</a>
+          <a href="#offers" class="border border-green-500 hover:bg-green-500 text-green-300 hover:text-white px-8 py-3 rounded-full font-semibold transition-colors">View Offers</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="products" class="py-16 px-6 bg-darker">
+      <div class="max-w-7xl mx-auto">
+        <h2 class="text-3xl font-bold text-green-300 mb-10">Our Products</h2>
+        
+        <!-- Filters -->
+        <div class="flex flex-wrap gap-4 items-center mb-8">
+          <div class="flex items-center gap-2">
+            <span class="text-gray-400">Price:</span>
+            <input type="range" id="priceRange" min="0" max="300000" value="300000" 
+                   class="w-32 md:w-48 accent-green-500" step="10000">
+            <span id="priceValue" class="text-white">₹300,000+</span>
+          </div>
+          
+          <div class="relative flex-1 max-w-md">
+            <input type="text" id="searchInput" placeholder="Search drones..." 
+                   class="w-full bg-gray-700 text-white px-4 py-2 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none">
+            <button id="searchBtn" class="absolute right-2 top-2 text-gray-400 hover:text-white">
+              <i class="fas fa-search"></i>
+            </button>
+          </div>
+          
+          <button id="clearFilters" class="text-green-300 hover:underline transition-colors">
+            Clear All Filters
+          </button>
+        </div>
+        
+        <!-- Products Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8" id="productsGrid">
+          <!-- Products will be loaded here -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Special Offers Section -->
+    <section id="offers" class="py-16 px-6 bg-gray-800 hidden">
+      <div class="max-w-7xl mx-auto">
+        <h2 class="text-3xl font-bold text-green-300 mb-10">Special Offers</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8" id="offersGrid">
+          <!-- Offers will be loaded here -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Why Choose Us -->
+    <section class="py-16 px-6 bg-darker">
+      <div class="max-w-7xl mx-auto">
+        <h2 class="text-3xl font-bold text-green-300 mb-10 text-center">Why Choose Planet O Drones?</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="text-center p-6 bg-gray-800 rounded-xl hover:bg-gray-700 transition-colors">
+            <div class="bg-green-600/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+              <i class="fas fa-shield-alt text-green-300 text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-semibold mb-2">2-Year Warranty</h3>
+            <p class="text-gray-300">Comprehensive warranty coverage for all our drones</p>
+          </div>
+          <div class="text-center p-6 bg-gray-800 rounded-xl hover:bg-gray-700 transition-colors">
+            <div class="bg-green-600/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+              <i class="fas fa-truck text-green-300 text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-semibold mb-2">Free Shipping</h3>
+            <p class="text-gray-300">Free delivery on orders over ₹10,000 across India</p>
+          </div>
+          <div class="text-center p-6 bg-gray-800 rounded-xl hover:bg-gray-700 transition-colors">
+            <div class="bg-green-600/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+              <i class="fas fa-headset text-green-300 text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-semibold mb-2">Expert Support</h3>
+            <p class="text-gray-300">Dedicated support team for all your drone needs</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-black border-t border-gray-800 py-12 px-6">
+    <div class="max-w-7xl mx-auto">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div>
+          <h3 class="text-lg font-semibold text-white mb-4">Planet O Drone Store</h3>
+          <p class="text-gray-400 mb-4">Premium drones and accessories for professionals and enthusiasts.</p>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold text-white mb-4">Quick Links</h3>
+          <ul class="space-y-2">
+            <li><a href="index.html" class="text-gray-400 hover:text-white transition-colors">Home</a></li>
+            <li><a href="#products" class="text-gray-400 hover:text-white transition-colors">Products</a></li>
+            <li><a href="#offers" class="text-gray-400 hover:text-white transition-colors">Special Offers</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold text-white mb-4">Contact</h3>
+          <ul class="space-y-2 text-gray-400">
+            <li class="flex items-center">
+              <i class="fas fa-map-marker-alt mr-2"></i> 
+              <a href="https://maps.google.com/?q=15 Circus Avenue, Kolkata - 700017" target="_blank" class="hover:text-white">
+                15 Circus Avenue, Kolkata - 700017
+              </a>
+            </li>
+            <li class="flex items-center">
+              <i class="fas fa-phone-alt mr-2"></i> 
+              <a href="tel:+919836302588" class="hover:text-white">
+                +91 9836302588
+              </a>
+            </li>
+            <li class="flex items-center">
+              <i class="fas fa-envelope mr-2"></i> 
+              <a href="mailto:siraj.ahmed0361@gmail.com" class="hover:text-white">
+                siraj.ahmed0361@gmail.com
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+        <p>&copy; <span id="currentYear"></span> Planet O Drone Store. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Product Modal -->
+  <div id="productModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-overlay">
+    <div class="product-modal p-6 max-w-2xl mx-auto w-full max-h-[90vh] overflow-y-auto">
+      <!-- Modal content loaded dynamically -->
+    </div>
+  </div>
+
+  <!-- Support Modal -->
+  <div id="supportModal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-gray-800 rounded-lg p-6 max-w-md mx-auto mt-20 w-full">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-xl font-bold">Contact Support</h3>
+        <button id="closeSupportModal" class="text-gray-400 hover:text-white">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <form id="supportForm">
+        <div class="mb-4">
+          <label class="block text-gray-400 mb-2">Your Name</label>
+          <input type="text" class="w-full bg-gray-700 text-white px-4 py-2 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none" required>
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-400 mb-2">Email</label>
+          <input type="email" class="w-full bg-gray-700 text-white px-4 py-2 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none" required>
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-400 mb-2">Message</label>
+          <textarea class="w-full bg-gray-700 text-white px-4 py-2 rounded-lg h-32 focus:ring-2 focus:ring-green-500 focus:outline-none" required></textarea>
+        </div>
+        <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg w-full transition-colors">
+          Send Message
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Cart Sidebar -->
+  <div id="cartSidebar" class="fixed top-0 right-0 h-full w-full md:w-96 bg-gray-800 shadow-lg transform translate-x-full transition-transform duration-300 z-50 overflow-y-auto">
+    <div class="p-6">
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-xl font-bold">Your Cart (<span id="sidebarCartCount">0</span>)</h3>
+        <button id="closeCartBtn" class="text-gray-400 hover:text-white">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      
+      <div id="cartItems" class="mb-6">
+        <!-- Cart items will be added here dynamically -->
+        <div class="text-center py-10 text-gray-400">
+          <i class="fas fa-shopping-cart text-4xl mb-2"></i>
+          <p>Your cart is empty</p>
+        </div>
+      </div>
+      
+      <div class="border-t border-gray-700 pt-4">
+        <div class="flex justify-between mb-2">
+          <span>Subtotal:</span>
+          <span id="cartSubtotal">₹0</span>
+        </div>
+        <div class="flex justify-between mb-2">
+          <span>Shipping:</span>
+          <span id="cartShipping">Calculated at checkout</span>
+        </div>
+        <div class="flex justify-between font-bold text-lg mb-6">
+          <span>Total:</span>
+          <span id="cartTotal">₹0</span>
+        </div>
+        
+        <button id="checkoutBtn" class="bg-green-600 hover:bg-green-700 text-white w-full py-3 rounded-lg font-semibold mb-4 transition-colors">
+          Proceed to Checkout
+        </button>
+        <a href="#products" onclick="document.getElementById('cartSidebar').classList.add('translate-x-full'); document.body.style.overflow='';" class="border border-green-500 text-green-300 hover:bg-green-500 hover:text-white w-full py-3 rounded-lg font-semibold text-center block transition-colors">
+          Continue Shopping
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Checkout Modal -->
+  <div id="checkoutModal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-gray-800 rounded-lg p-6 max-w-2xl mx-auto mt-20 w-full max-h-[90vh] overflow-y-auto">
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-xl font-bold">Checkout</h3>
+        <button id="closeCheckoutModal" class="text-gray-400 hover:text-white">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      
+      <form id="checkoutForm">
+        <div class="mb-6">
+          <h4 class="font-semibold mb-4 text-green-300">Contact Information</h4>
+          <div class="mb-4">
+            <label class="block text-gray-400 mb-2">Email Address</label>
+            <input type="email" id="checkoutEmail" class="w-full bg-gray-700 text-white px-4 py-2 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none" required>
+          </div>
+        </div>
+        
+        <div class="mb-6">
+          <h4 class="font-semibold mb-4 text-green-300">Shipping Address</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label class="block text-gray-400 mb-2">First Name</label>
+              <input type="text" class="w-full bg-gray-700 text-white px-4 py-2 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none" required>
+            </div>
+            <div>
+              <label class="block text-gray-400 mb-2">Last Name</label>
+              <input type="text" class="w-full bg-gray-700 text-white px-4 py-2 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none" required>
+            </div>
+          </div>
+          <div class="mb-4">
+            <label class="block text-gray-400 mb-2">Address</label>
+            <input type="text" class="w-full bg-gray-700 text-white px-4 py-2 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none" required>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <div>
+              <label class="block text-gray-400 mb-2">City</label>
+              <input type="text" class="w-full bg-gray-700 text-white px-4 py-2 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none" required>
+            </div>
+            <div>
+              <label class="block text-gray-400 mb-2">State</label>
+              <input type="text" class="w-full bg-gray-700 text-white px-4 py-2 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none" required>
+            </div>
+            <div>
+              <label class="block text-gray-400 mb-2">PIN Code</label>
+              <input type="text" class="w-full bg-gray-700 text-white px-4 py-2 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none" required>
+            </div>
+          </div>
+          <div class="mb-4">
+            <label class="block text-gray-400 mb-2">Phone Number</label>
+            <input type="tel" class="w-full bg-gray-700 text-white px-4 py-2 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none" required>
+          </div>
+        </div>
+        
+        <div class="mb-6">
+          <h4 class="font-semibold mb-4 text-green-300">Payment Method</h4>
+          
+          <div class="space-y-3">
+            <div class="payment-method p-4 rounded-lg cursor-pointer border border-gray-700 hover:border-green-500 transition-colors">
+              <div class="flex items-center">
+                <input type="radio" name="paymentMethod" id="upi" class="mr-3" checked>
+                <label for="upi" class="flex-grow cursor-pointer">
+                  <div class="flex justify-between items-center">
+                    <span>UPI Payment</span>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/UPI-Logo-vector.svg/1200px-UPI-Logo-vector.svg.png" alt="UPI" class="h-6">
+                  </div>
+                </label>
+              </div>
+              
+              <div id="upiDetails" class="mt-3 pl-7">
+                <p class="text-sm text-gray-400 mb-2">Send payment to:</p>
+                <div class="flex items-center mb-3">
+                  <div class="bg-white p-1 rounded mr-3">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=planeto.store@upi" alt="UPI QR Code" class="w-16 h-16">
+                  </div>
+                  <div>
+                    <p class="text-sm font-mono bg-gray-700 px-2 py-1 rounded">planeto.store@upi</p>
+                    <button id="copyUpiBtn" type="button" class="text-xs text-green-300 mt-1 hover:text-green-400 transition-colors">Copy UPI ID</button>
+                  </div>
+                </div>
+                <p class="text-xs text-gray-400">After payment, share screenshot on WhatsApp +91 9836302588</p>
+              </div>
+            </div>
+            
+            <div class="payment-method p-4 rounded-lg cursor-pointer border border-gray-700 hover:border-green-500 transition-colors">
+              <div class="flex items-center">
+                <input type="radio" name="paymentMethod" id="card" class="mr-3">
+                <label for="card" class="flex-grow cursor-pointer">
+                  <div class="flex justify-between items-center">
+                    <span>Credit/Debit Card</span>
+                    <div class="flex space-x-2">
+                      <img src="https://cdn-icons-png.flaticon.com/512/196/196578.png" alt="Visa" class="h-6">
+                      <img src="https://cdn-icons-png.flaticon.com/512/196/196561.png" alt="Mastercard" class="h-6">
+                    </div>
+                  </div>
+                </label>
+              </div>
+              
+              <div id="cardDetails" class="mt-3 pl-7 hidden">
+                <div class="mb-3">
+                  <label class="block text-gray-400 text-sm mb-1">Card Number</label>
+                  <input type="text" placeholder="1234 5678 9012 3456" class="w-full bg-gray-700 text-white px-3 py-2 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none">
+                </div>
+                
+                <div class="grid grid-cols-2 gap-3 mb-3">
+                  <div>
+                    <label class="block text-gray-400 text-sm mb-1">Expiry Date</label>
+                    <input type="text" placeholder="MM/YY" class="w-full bg-gray-700 text-white px-3 py-2 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none">
+                  </div>
+                  <div>
+                    <label class="block text-gray-400 text-sm mb-1">CVV</label>
+                    <input type="text" placeholder="123" class="w-full bg-gray-700 text-white px-3 py-2 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none">
+                  </div>
+                </div>
+                
+                <div class="mb-3">
+                  <label class="block text-gray-400 text-sm mb-1">Name on Card</label>
+                  <input type="text" placeholder="John Doe" class="w-full bg-gray-700 text-white px-3 py-2 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none">
+                </div>
+              </div>
+            </div>
+            
+            <div class="payment-method p-4 rounded-lg cursor-pointer border border-gray-700 hover:border-green-500 transition-colors">
+              <div class="flex items-center">
+                <input type="radio" name="paymentMethod" id="cod" class="mr-3">
+                <label for="cod" class="flex-grow cursor-pointer">
+                  <div class="flex justify-between items-center">
+                    <span>Cash on Delivery</span>
+                    <i class="fas fa-money-bill-wave text-gray-400"></i>
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="border-t border-gray-700 pt-4">
+          <div class="flex justify-between mb-2">
+            <span>Subtotal:</span>
+            <span id="checkoutSubtotal">₹0</span>
+          </div>
+          <div class="flex justify-between mb-2">
+            <span>Shipping:</span>
+            <span id="checkoutShipping">₹99</span>
+          </div>
+          <div class="flex justify-between font-bold text-lg mb-6">
+            <span>Total:</span>
+            <span id="checkoutTotal">₹0</span>
+          </div>
+          
+          <button type="submit" class="bg-green-600 hover:bg-green-700 text-white w-full py-3 rounded-lg font-semibold transition-colors">
+            Place Order
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Order Confirmation Modal -->
+  <div id="orderConfirmation" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-gray-800 rounded-lg p-8 max-w-md mx-auto text-center">
+      <div class="bg-green-600/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+        <i class="fas fa-check text-2xl text-green-300"></i>
+      </div>
+      <h3 class="text-2xl font-bold mb-2">Order Placed Successfully!</h3>
+      <p class="text-gray-300 mb-6">Thank you for your purchase. Your order ID is <span class="font-mono">#PO-<span id="orderId"></span></span></p>
+      <p class="text-gray-400 text-sm mb-6">A confirmation has been sent to your email. Our team will contact you shortly.</p>
+      <div class="flex justify-center space-x-4">
+        <button id="viewOrderBtn" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors">View Order</button>
+        <button id="continueShoppingBtn" class="border border-green-500 text-green-300 hover:bg-green-500 hover:text-white px-6 py-2 rounded-lg font-semibold transition-colors">Continue Shopping</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+  // Product Database
+  const products = [
+    {
+      id: 'drone1',
+      name: 'DJI Mavic 3 Pro',
+      price: 219999,
+      category: 'camera',
+      image: 'https://cdn.eraspace.com/pub/media/mageplaza/blog/post/d/j/dji_mavic_3_pro.png',
+      specs: {
+        camera: '20MP Hasselblad',
+        flightTime: '46 mins',
+        range: '15 km',
+        weight: '895g'
+      },
+      description: 'Professional aerial photography drone with 4/3 CMOS sensor'
+    },
+    {
+      id: 'drone2',
+      name: 'DJI Mini 3 Pro',
+      price: 89999,
+      category: 'compact',
+      image: 'https://media.reshift.nl/catalog/1DE47E3C5D7261F1D5B532E0DBA7C3BFE3C292E3',
+      specs: {
+        camera: '12MP 1/1.3"',
+        flightTime: '34 mins',
+        range: '10 km',
+        weight: '249g'
+      },
+      description: 'Ultra-light foldable drone with 4K video',
+      onSale: true
+    },
+    {
+      id: 'drone3',
+      name: 'DJI Avata',
+      price: 129999,
+      category: 'fpv',
+      image: 'https://th.bing.com/th/id/OIP.y4mvn91Jc-aAYKoJF5b7gAHaE7?w=2522&h=1681&rs=1&pid=ImgDetMain',
+      specs: {
+        camera: '48MP 1/1.7"',
+        flightTime: '18 mins',
+        range: '10 km',
+        weight: '410g'
+      },
+      description: 'Immersive FPV drone with intuitive motion controller'
+    },
+    {
+      id: 'drone4',
+      name: 'Autel Evo Lite+',
+      price: 149999,
+      category: 'camera',
+      image: 'https://static1.makeuseofimages.com/wordpress/wp-content/uploads/2022/03/Autel-EVO-Lite-(Studio-Photo)---14.jpg',
+      specs: {
+        camera: '50MP 1" CMOS',
+        flightTime: '40 mins',
+        range: '12 km',
+        weight: '835g'
+      },
+      description: '6K camera drone with adjustable aperture',
+      onSale: true
+    },
+    {
+      id: 'drone5',
+      name: 'DJI FPV Combo',
+      price: 159999,
+      category: 'fpv',
+      image: 'https://gomacstar.com/wp-content/uploads/2021/03/dji_cp_fp_00000001_01_fpv_drone_combo_1614677735_1610901.jpg',
+      specs: {
+        camera: '12MP 1/2.3"',
+        flightTime: '20 mins',
+        range: '10 km',
+        weight: '795g'
+      },
+      description: 'Complete FPV flying experience with goggles'
+    },
+    {
+      id: 'drone6',
+      name: 'DJI Air 2S',
+      price: 129999,
+      category: 'camera',
+      image: 'https://blog.bestbuy.ca/wp-content/uploads/2019/11/Mini-Mavic.jpg',
+      specs: {
+        camera: '20MP 1" CMOS',
+        flightTime: '31 mins',
+        range: '12 km',
+        weight: '595g'
+      },
+      description: 'Compact drone with 1-inch sensor and 5.4K video'
+    },
+    {
+      id: 'drone7',
+      name: 'DJI Mini 2 SE',
+      price: 49999,
+      category: 'compact',
+      image: 'https://gomacstar.com/wp-content/uploads/2023/03/1678920351_1752761.jpg',
+      specs: {
+        camera: '12MP 1/2.3"',
+        flightTime: '31 mins',
+        range: '10 km',
+        weight: '246g'
+      },
+      description: 'Entry-level drone with 2.7K video'
+    },
+    {
+      id: 'drone8',
+      name: 'DJI Mavic 3 Classic',
+      price: 179999,
+      category: 'camera',
+      image: 'https://images.unsplash.com/photo-1579829366248-204fe8413f31',
+      specs: {
+        camera: '20MP 4/3 CMOS',
+        flightTime: '46 mins',
+        range: '15 km',
+        weight: '895g'
+      },
+      description: 'Professional drone with Hasselblad camera'
+    }
+  ];
+  // Special Offers
+  const offers = [
+    {
+      id: 'offer1',
+      name: 'DJI Mini 3 Pro Fly More Combo',
+      price: 109999,
+      originalPrice: 129999,
+      category: 'compact',
+      image: 'https://images.unsplash.com/photo-1507582020474-9a35b7d455d9',
+      specs: {
+        camera: '12MP 1/1.3"',
+        flightTime: '34 mins (x3 batteries)',
+        range: '10 km',
+        weight: '249g'
+      },
+      description: 'Includes 2 extra batteries, charging hub, and carrying case'
+    },
+    {
+      id: 'offer2',
+      name: 'DJI Avata Pro View Combo',
+      price: 149999,
+      originalPrice: 169999,
+      category: 'fpv',
+      image: 'https://scale.coolshop-cdn.com/product-media.coolshop-cdn.com/23FB9Z/1f05438447cc4f6ea3da3088a9e7dbe3.jpg/f/dji-avata-pro-view-combo-dji-rc-motion-2.jpg',
+      specs: {
+        camera: '48MP 1/1.7"',
+        flightTime: '18 mins (x2 batteries)',
+        range: '10 km',
+        weight: '410g'
+      },
+      description: 'Includes motion controller, extra battery, and ND filters'
+    },
+    {
+      id: 'offer3',
+      name: 'DJI Air 2S Fly More Combo',
+      price: 149999,
+      originalPrice: 169999,
+      category: 'camera',
+      image: 'https://th.bing.com/th/id/OIP.iYm-1b_ZsypbljmTsAjbHwHaFl?rs=1&pid=ImgDetMain',
+      specs: {
+        camera: '20MP 1" CMOS',
+        flightTime: '31 mins (x3 batteries)',
+        range: '12 km',
+        weight: '595g'
+      },
+      description: 'Includes extra batteries, charging hub, and carrying case'
+    }
+  ];
+
+  // Cart state
+  let cart = [];
+
+  // Initialize the app
+  function init() {
+    renderProducts();
+    renderOffers();
+    setupEventListeners();
+    loadCart();
+    updateCartUI();
+    
+    // Set current year in footer
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+  }
+
+  // Render products to the grid
+  function renderProducts(filteredProducts) {
+    const productsToRender = filteredProducts || products;
+    const grid = document.getElementById('productsGrid');
+    
+    grid.innerHTML = productsToRender.map(product => `
+      <div class="product-card rounded-lg overflow-hidden shadow-lg">
+        <div class="relative">
+          <img loading="lazy" src="${product.image}" alt="${product.name}" class="w-full h-48 object-cover cursor-pointer" 
+               onclick="showProductModal('${product.id}', false)">
+          ${product.onSale ? '<div class="badge-sale">SALE</div>' : ''}
+        </div>
+        <div class="p-4">
+          <h3 class="text-xl font-semibold mb-2">${product.name}</h3>
+          <p class="text-gray-300 text-sm mb-4 truncate">${product.description}</p>
+          <div class="flex justify-between items-center">
+            <div>
+              <span class="price-tag">₹${product.price.toLocaleString()}</span>
+            </div>
+            ${getAddToCartButtonHTML(product.id)}
+          </div>
+        </div>
+      </div>
+    `).join('');
+    
+    // Add event listeners to add-to-cart buttons
+    setupAddToCartButtons();
+  }
+
+  // Get appropriate add to cart button HTML
+  function getAddToCartButtonHTML(productId) {
+    const cartItem = cart.find(item => item.id === productId);
+    
+    if (cartItem) {
+      return `
+        <div class="quantity-control">
+          <button onclick="event.stopPropagation(); adjustCartQuantityFromButton('${productId}', -1, this)" 
+                  class="quantity-btn hover:bg-green-600">-</button>
+          <span class="quantity-display">${cartItem.quantity}</span>
+          <button onclick="event.stopPropagation(); adjustCartQuantityFromButton('${productId}', 1, this)" 
+                  class="quantity-btn hover:bg-green-600">+</button>
+        </div>
+      `;
+    } else {
+      return `
+        <button class="add-to-cart bg-green-600 hover:bg-green-700 text-white p-2 rounded-full transition-colors" 
+                data-id="${productId}">
+          <i class="fas fa-plus"></i>
+        </button>
+      `;
+    }
+  }
+
+  // Setup add to cart button event listeners
+  function setupAddToCartButtons() {
+    document.querySelectorAll('.add-to-cart').forEach(button => {
+      button.addEventListener('click', function(e) {
+        e.stopPropagation();
+        const productId = this.dataset.id;
+        const product = products.concat(offers).find(p => p.id === productId);
+        
+        if (product) {
+          addToCart(product.id, product.name, product.price);
+          
+          // Update button to show quantity controls
+          this.outerHTML = getAddToCartButtonHTML(productId);
+          setupAddToCartButtons();
+        }
+      });
+    });
+  }
+
+  // Render offers to the offers grid
+  function renderOffers(filteredOffers) {
+    const offersToRender = filteredOffers || offers;
+    const grid = document.getElementById('offersGrid');
+    
+    grid.innerHTML = offersToRender.map(offer => `
+      <div class="product-card rounded-lg overflow-hidden shadow-lg border-2 border-green-500">
+        <div class="relative">
+          <img loading="lazy" src="${offer.image}" alt="${offer.name}" class="w-full h-48 object-cover cursor-pointer" 
+               onclick="showProductModal('${offer.id}', true)">
+          <div class="badge-offer">${Math.round((1 - offer.price/offer.originalPrice) * 100)}% OFF</div>
+        </div>
+        <div class="p-4">
+          <h3 class="text-xl font-semibold mb-2">${offer.name}</h3>
+          <p class="text-gray-300 text-sm mb-4 truncate">${offer.description}</p>
+          <div class="flex justify-between items-center">
+            <div>
+              <span class="price-tag">₹${offer.price.toLocaleString()}</span>
+              <span class="text-sm text-gray-400 line-through ml-2">₹${offer.originalPrice.toLocaleString()}</span>
+            </div>
+            ${getAddToCartButtonHTML(offer.id)}
+          </div>
+        </div>
+      </div>
+    `).join('');
+    
+    // Add event listeners to add-to-cart buttons
+    setupAddToCartButtons();
+  }
+
+  // Show product modal with details
+  function showProductModal(productId, isOffer) {
+    const product = isOffer 
+      ? offers.find(p => p.id === productId)
+      : products.find(p => p.id === productId);
+    
+    const cartItem = cart.find(item => item.id === productId);
+    const cartQty = cartItem ? cartItem.quantity : 0;
+    
+    const modal = document.getElementById('productModal');
+    
+    // Generate specs HTML with product name and close button
+    const specsHTML = `
+      <div class="flex justify-between items-center mb-4">
+        <h4 class="text-lg font-semibold">${product.name} Specifications</h4>
+        <button onclick="closeModal()" class="text-gray-400 hover:text-white">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+        ${Object.entries(product.specs).map(([key, value]) => `
+          <div class="bg-gray-700 p-3 rounded-lg">
+            <div class="text-gray-400 text-sm">${key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}</div>
+            <div class="font-bold">${value}</div>
+          </div>
+        `).join('')}
+      </div>
+    `;
+    
+    modal.innerHTML = `
+  <div class="relative bg-[#1E1E1E] rounded-xl p-6 text-white w-full max-w-4xl mx-auto">
+    <button onclick="closeModal()" 
+            class="absolute top-4 right-4 text-white text-2xl hover:text-red-400 transition-all z-50">
+      <i class="fas fa-times"></i>
+    </button>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+      <!-- Image Side -->
+      <div class="w-full">
+        <div class="aspect-square w-full bg-white rounded-lg overflow-hidden shadow-md">
+          <img src="${product.image}" alt="${product.name}" class="object-contain w-full h-full">
+        </div>
+      </div>
+
+      <!-- Details Side -->
+      <div class="w-full">
+        <h3 class="text-2xl font-bold text-white mb-4">${product.name}</h3>
+        <div class="mb-4">
+          <span class="text-3xl price-tag">₹${product.price.toLocaleString()}</span>
+        </div>
+
+        <div class="flex border-b border-gray-700 mb-4">
+          <button onclick="showTab('desc')" class="tab-btn active">Description</button>
+          <button onclick="showTab('specs')" class="tab-btn">Specifications</button>
+        </div>
+
+        <div id="descTab" class="tab-content active">
+          <p class="text-gray-300">${product.description}</p>
+        </div>
+
+        <div id="specsTab" class="tab-content">
+          <div class="grid grid-cols-2 gap-4">
+            ${Object.entries(product.specs).map(([key, value]) => `
+              <div class="bg-gray-700 p-3 rounded-lg">
+                <div class="text-gray-400 text-sm">${key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}</div>
+                <div class="font-bold">${value}</div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+
+        <div class="mt-8 flex items-center gap-4 flex-wrap">
+          <div class="quantity-control">
+            <button onclick="adjustCartQuantity('${product.id}', -1)" class="quantity-btn hover:bg-green-600">-</button>
+            <span id="modalQty-${product.id}" class="quantity-display">${cart.find(item => item.id === product.id)?.quantity || 1}</span>
+            <button onclick="adjustCartQuantity('${product.id}', 1)" class="quantity-btn hover:bg-green-600">+</button>
+          </div>
+          <button onclick="addToCart('${product.id}', '${product.name}', ${product.price})" 
+                  class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors">
+            Add to Cart
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+`;
+
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  }
+
+  // Tab switching function
+  function showTab(tab) {
+    const tabs = ['desc', 'specs'];
+    tabs.forEach(t => {
+      document.getElementById(`${t}Tab`).classList.toggle('active', t === tab);
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.textContent.toLowerCase().includes(tab));
+      });
+    });
+  }
+
+  // Close modal
+  function closeModal() {
+    document.getElementById('productModal').classList.add('hidden');
+    document.body.style.overflow = '';
+  }
+
+  // Add item to cart
+  function addToCart(id, name, price) {
+  const qtyElement = document.getElementById(`modalQty-${id}`);
+  let modalQuantity = 1;
+
+  if (qtyElement) {
+    // Parse quantity if available in modal
+    modalQuantity = parseInt(qtyElement.textContent);
+    if (isNaN(modalQuantity) || modalQuantity <= 0) {
+      modalQuantity = 1; // Default fallback
+    }
+  }
+
+  const existingItem = cart.find(item => item.id === id);
+
+  if (existingItem) {
+    existingItem.quantity = modalQuantity; // ← SYNC quantity to what modal shows
+  } else {
+    cart.push({
+      id,
+      name,
+      price,
+      quantity: modalQuantity
+    });
+  }
+
+  saveCart();
+  updateCartUI();
+
+  // Update modal quantity
+  if (qtyElement) {
+    qtyElement.textContent = modalQuantity;
+  }
+
+  renderProducts(); // Update product grid UI too
+  setupAddToCartButtons();
+}
+
+
+  // Adjust cart quantity from product card button
+  function adjustCartQuantityFromButton(id, change, buttonElement) {
+  adjustCartQuantity(id, change);
+
+  const cartItem = cart.find(item => item.id === id);
+  const productCard = buttonElement.closest('.product-card');
+  const addToCartContainer = productCard.querySelector('.flex.justify-between.items-center > div:last-child');
+
+  if (cartItem) {
+    addToCartContainer.innerHTML = `
+      <div class="quantity-control">
+        <button onclick="event.stopPropagation(); adjustCartQuantityFromButton('${id}', -1, this)" 
+                class="quantity-btn hover:bg-green-600">-</button>
+        <span class="quantity-display">${cartItem.quantity}</span>
+        <button onclick="event.stopPropagation(); adjustCartQuantityFromButton('${id}', 1, this)" 
+                class="quantity-btn hover:bg-green-600">+</button>
+      </div>
+    `;
+  } else {
+    addToCartContainer.innerHTML = `
+      <button class="add-to-cart bg-green-600 hover:bg-green-700 text-white p-2 rounded-full transition-colors" 
+              data-id="${id}">
+        <i class="fas fa-plus"></i>
+      </button>
+    `;
+    setupAddToCartButtons(); // Important!
+  }
+}
+
+
+  // Adjust cart quantity
+  function adjustCartQuantity(id, change) {
+  const item = cart.find(item => item.id === id);
+
+  if (item) {
+    item.quantity += change;
+
+    if (item.quantity <= 0) {
+      cart = cart.filter(item => item.id !== id);
+    }
+  } else if (change > 0) {
+    const product = products.concat(offers).find(p => p.id === id);
+    if (product) {
+      addToCart(id, product.name, product.price);
+      return;
+    }
+  }
+
+  saveCart();
+  updateCartUI();
+
+  // UPDATE PRODUCT GRID IF MODAL CHANGES SOMETHING
+  renderProducts();
+  setupAddToCartButtons();
+
+  // Also update quantity in modal if open
+  const qtyElement = document.getElementById(`modalQty-${id}`);
+  if (qtyElement) {
+    qtyElement.textContent = cart.find(item => item.id === id)?.quantity || 0;
+  }
+}
+
+
+  // Save cart to localStorage
+  function saveCart() {
+    localStorage.setItem('planetOCart', JSON.stringify(cart));
+  }
+
+  // Load cart from localStorage
+  function loadCart() {
+    const savedCart = localStorage.getItem('planetOCart');
+    if (savedCart) {
+      cart = JSON.parse(savedCart);
+    }
+  }
+
+  // Update cart UI
+  function updateCartUI() {
+    const cartCount = cart.reduce((total, item) => total + item.quantity, 0);
+    const subtotal = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+    const shipping = subtotal >= 10000 ? 0 : 99;
+    const total = subtotal + shipping;
+    
+    // Update cart count
+    document.getElementById('cartCount').textContent = cartCount;
+    document.getElementById('sidebarCartCount').textContent = cartCount;
+    
+    // Update cart total amount
+    document.getElementById('cartTotalAmount').textContent = `₹${total.toLocaleString()}`;
+    document.getElementById('cartTotalAmount').style.display = cartCount > 0 ? 'block' : 'none';
+    
+    // Update cart items
+    const cartItemsEl = document.getElementById('cartItems');
+    
+    if (cart.length === 0) {
+      cartItemsEl.innerHTML = `
+        <div class="text-center py-10 text-gray-400">
+          <i class="fas fa-shopping-cart text-4xl mb-2"></i>
+          <p>Your cart is empty</p>
+        </div>
+      `;
+    } else {
+      cartItemsEl.innerHTML = cart.map(item => `
+        <div class="cart-item py-4 border-b border-gray-700">
+          <div class="flex justify-between items-start">
+            <div class="flex-grow">
+              <h4 class="font-semibold">${item.name}</h4>
+              <div class="flex items-center mt-2">
+                <div class="quantity-control">
+                  <button onclick="adjustCartQuantity('${item.id}', -1)" 
+                          class="quantity-btn hover:bg-green-600">-</button>
+                  <span class="quantity-display">${item.quantity}</span>
+                  <button onclick="adjustCartQuantity('${item.id}', 1)" 
+                          class="quantity-btn hover:bg-green-600">+</button>
+                </div>
+                <span class="text-gray-400 mx-2">×</span>
+                <span class="item-price">₹${item.price.toLocaleString()}</span>
+              </div>
+            </div>
+            <div class="font-semibold ml-4">
+              ₹${(item.price * item.quantity).toLocaleString()}
+            </div>
+            <button onclick="removeFromCart('${item.id}')" 
+                    class="text-gray-400 hover:text-red-400 ml-4 transition-colors">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+    
+    // Update totals
+    document.getElementById('cartSubtotal').textContent = `₹${subtotal.toLocaleString()}`;
+    document.getElementById('cartShipping').textContent = shipping === 0 ? 'FREE' : `₹${shipping}`;
+    document.getElementById('cartTotal').textContent = `₹${total.toLocaleString()}`;
+    
+    // Update checkout totals
+    document.getElementById('checkoutSubtotal').textContent = `₹${subtotal.toLocaleString()}`;
+    document.getElementById('checkoutShipping').textContent = shipping === 0 ? 'FREE' : `₹${shipping}`;
+    document.getElementById('checkoutTotal').textContent = `₹${total.toLocaleString()}`;
+  }
+
+  // Remove item from cart
+  function removeFromCart(id) {
+    cart = cart.filter(item => item.id !== id);
+    saveCart();
+    updateCartUI();
+    
+    // Update quantity in modal if open
+    const qtyElement = document.getElementById(`modalQty-${id}`);
+    if (qtyElement) {
+      qtyElement.textContent = '0';
+    }
+    
+    // Reset add-to-cart button if product is in grid
+    const productCard = document.querySelector(`.product-card [data-id="${id}"]`);
+    if (productCard) {
+      const product = products.concat(offers).find(p => p.id === id);
+      if (product) {
+        const addToCartContainer = productCard.closest('.product-card').querySelector('.flex.justify-between.items-center > div:last-child');
+        addToCartContainer.innerHTML = `
+          <button class="add-to-cart bg-green-600 hover:bg-green-700 text-white p-2 rounded-full transition-colors" 
+                  data-id="${id}">
+            <i class="fas fa-plus"></i>
+          </button>
+        `;
+        setupAddToCartButtons();
+      }
+    }
+  }
+
+  // Filter products based on search and price
+  function filterProducts() {
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    const maxPrice = parseInt(document.getElementById('priceRange').value);
+    
+    const filteredProducts = products.filter(product => {
+      const matchesSearch = product.name.toLowerCase().includes(searchTerm) || 
+                          product.description.toLowerCase().includes(searchTerm);
+      const matchesPrice = product.price <= maxPrice;
+      return matchesSearch && matchesPrice;
+    });
+    
+    renderProducts(filteredProducts);
+  }
+
+  // Filter offers
+  function filterOffers() {
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    const maxPrice = parseInt(document.getElementById('priceRange').value);
+    
+    const filteredOffers = offers.filter(offer => {
+      const matchesSearch = offer.name.toLowerCase().includes(searchTerm) || 
+                          offer.description.toLowerCase().includes(searchTerm);
+      const matchesPrice = offer.price <= maxPrice;
+      return matchesSearch && matchesPrice;
+    });
+    
+    renderOffers(filteredOffers);
+  }
+
+  // Setup event listeners
+  function setupEventListeners() {
+    // Cart toggle
+    document.getElementById('cartBtn').addEventListener('click', () => {
+      document.getElementById('cartSidebar').classList.remove('translate-x-full');
+      document.body.style.overflow = 'hidden';
+    });
+    
+    document.getElementById('closeCartBtn').addEventListener('click', () => {
+      document.getElementById('cartSidebar').classList.add('translate-x-full');
+      document.body.style.overflow = '';
+    });
+    
+    // Checkout button
+    document.getElementById('checkoutBtn').addEventListener('click', (e) => {
+      e.preventDefault();
+      document.getElementById('cartSidebar').classList.add('translate-x-full');
+      document.getElementById('checkoutModal').classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    });
+    
+    // Close checkout modal
+    document.getElementById('closeCheckoutModal').addEventListener('click', () => {
+      document.getElementById('checkoutModal').classList.add('hidden');
+      document.body.style.overflow = '';
+    });
+    
+    // Price range filter
+    document.getElementById('priceRange').addEventListener('input', () => {
+      const value = parseInt(document.getElementById('priceRange').value);
+      document.getElementById('priceValue').textContent = value === 300000 ? '₹300,000+' : `₹${value.toLocaleString()}`;
+      
+      if (document.getElementById('products').classList.contains('hidden')) {
+        filterOffers();
+      } else {
+        filterProducts();
+      }
+    });
+    
+    // Search input with debounce
+    let searchTimeout;
+    document.getElementById('searchInput').addEventListener('input', () => {
+      clearTimeout(searchTimeout);
+      searchTimeout = setTimeout(() => {
+        if (document.getElementById('products').classList.contains('hidden')) {
+          filterOffers();
+        } else {
+          filterProducts();
+        }
+      }, 300);
+    });
+    
+    // Clear filters
+    document.getElementById('clearFilters').addEventListener('click', () => {
+      document.getElementById('priceRange').value = 300000;
+      document.getElementById('priceValue').textContent = '₹300,000+';
+      document.getElementById('searchInput').value = '';
+      
+      if (document.getElementById('products').classList.contains('hidden')) {
+        renderOffers();
+      } else {
+        renderProducts();
+      }
+    });
+    
+    // Support modal
+    document.querySelector('a[href="#support"]').addEventListener('click', (e) => {
+      e.preventDefault();
+      document.getElementById('supportModal').classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    });
+    
+    document.getElementById('closeSupportModal').addEventListener('click', () => {
+      document.getElementById('supportModal').classList.add('hidden');
+      document.body.style.overflow = '';
+    });
+    
+    // Support form submission
+    document.getElementById('supportForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      alert('Support message would be sent here. In a real app, this would email Siraj at siraj.ahmed0361@gmail.com');
+      document.getElementById('supportModal').classList.add('hidden');
+      document.body.style.overflow = '';
+    });
+    
+    // Toggle between products and offers
+    document.querySelectorAll('a[href="#products"], a[href="#offers"]').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const isProducts = link.getAttribute('href') === '#products';
+
+        document.getElementById('products').classList.toggle('hidden', !isProducts);
+        document.getElementById('offers').classList.toggle('hidden', isProducts);
+
+        document.querySelector('a[href="#products"]').classList.toggle('text-green-300', isProducts);
+        document.querySelector('a[href="#products"]').classList.toggle('text-white', !isProducts);
+        document.querySelector('a[href="#offers"]').classList.toggle('text-green-300', !isProducts);
+        document.querySelector('a[href="#offers"]').classList.toggle('text-white', isProducts);
+      });
+    });
+    
+    // Payment method selection
+    document.querySelectorAll('input[name="paymentMethod"]').forEach(method => {
+      method.addEventListener('change', function() {
+        document.querySelectorAll('[id$="Details"]').forEach(el => {
+          el.classList.add('hidden');
+        });
+        
+        if (this.checked) {
+          const detailsId = this.id + 'Details';
+          const detailsEl = document.getElementById(detailsId);
+          if (detailsEl) detailsEl.classList.remove('hidden');
+        }
+      });
+    });
+    
+    // Copy UPI ID
+    document.getElementById('copyUpiBtn').addEventListener('click', function() {
+      navigator.clipboard.writeText('planeto.store@upi').then(() => {
+        const originalText = this.textContent;
+        this.textContent = 'Copied!';
+        setTimeout(() => {
+          this.textContent = originalText;
+        }, 2000);
+      });
+    });
+    
+    // Place order
+    document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const email = document.getElementById('checkoutEmail').value;
+      
+      // Save email to localStorage
+      localStorage.setItem('customerEmail', email);
+      
+      // In a real app, you would:
+      // 1. Process the payment
+      // 2. Send confirmation email to customer
+      // 3. Send order details to Siraj
+      
+      // For demo purposes, we'll simulate this with a simple fetch call
+      const orderData = {
+        email: email,
+        items: cart,
+        total: cart.reduce((total, item) => total + (item.price * item.quantity), 0)
+      };
+      
+      // This would be replaced with actual backend endpoint
+      fetch('https://jsonplaceholder.typicode.com/posts', {
+        method: 'POST',
+        body: JSON.stringify(orderData),
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+      })
+      .then(response => response.json())
+      .then(json => {
+        console.log('Order submitted:', json);
+        
+        // Show confirmation
+        document.getElementById('checkoutModal').classList.add('hidden');
+        document.getElementById('orderConfirmation').classList.remove('hidden');
+        document.getElementById('orderId').textContent = Math.floor(1000 + Math.random() * 9000);
+        
+        // Clear cart
+        cart = [];
+        saveCart();
+        updateCartUI();
+      })
+      .catch(error => {
+        console.error('Error submitting order:', error);
+        alert('There was an error processing your order. Please try again.');
+      });
+    });
+    
+    // Order confirmation buttons
+    document.getElementById('viewOrderBtn').addEventListener('click', () => {
+      document.getElementById('orderConfirmation').classList.add('hidden');
+      document.body.style.overflow = '';
+      alert('Order details would show here in a complete implementation');
+    });
+    
+    document.getElementById('continueShoppingBtn').addEventListener('click', () => {
+      document.getElementById('orderConfirmation').classList.add('hidden');
+      document.getElementById('cartSidebar').classList.add('translate-x-full');
+      document.body.style.overflow = '';
+    });
+  }
+
+  // Initialize the app when DOM is loaded
+  document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
